@@ -24,7 +24,7 @@
 
       - UF => federative unit abbreviation
       - CITY => the city corresponding a UF on [IBGE api](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-Municipios-estadosUFMunicipiosGet)
-        -items -> list of ids to filter results comma separated
+      - items -> list of ids to filter results comma separated
 
      - response type:
 
