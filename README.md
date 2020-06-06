@@ -6,19 +6,19 @@
 
 # Routes
 
-## - /items => list of items available to recycle
+- /items => list of items available to recycle
 
-### - response type:
+  - response type:
 
-```
-  [{
-    id:number;
-    title: string;
-    image_url: string;
-  }]
-```
+  ```
+    [{
+      id:number;
+      title: string;
+      image_url: string;
+   }]
+  ```
 
-## - /points?uf=UF&city=CITY&items=1,3,6 = > list of points
+- /points?uf=UF&city=CITY&items=1,3,6 = > list of points
 
     - query params:
 
@@ -26,7 +26,7 @@
       - CITY => the city corresponding a UF on [IBGE api](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-Municipios-estadosUFMunicipiosGet)
         -items -> list of ids to filter results comma separated
 
-      ### - response type:
+     - response type:
 
       ```
         [{
@@ -42,11 +42,12 @@
         }]
       ```
 
-## - /points/:id
+- /points/:id
 
     - route param
       - id => id to show point information
-      ### - response type:
+     
+     - response type:
 
         ```
           {
