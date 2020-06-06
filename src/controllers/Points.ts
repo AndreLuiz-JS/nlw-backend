@@ -17,7 +17,13 @@ export default {
 			.distinct()
 			.select("points.*");
 
-		return res.json(points);
+		const serializedPoints = points.map((point) => {
+			return {
+				...point,
+				image_url: `http:10.0.0.133:3333/uploads/${point.image}`,
+			};
+		});
+		return res.json(serializedPoints);
 	},
 	async show(req: Request, res: Response) {
 		const { id } = req.params;
@@ -31,11 +37,14 @@ export default {
 			.where("point_item.point_id", id)
 			.select("items.title");
 		const items = response.map((item) => item.title);
-		return res.json({ point, items });
+		const serializedPoint = {
+			...point,
+			image_url: `http://10.0.0.133:3333/uploads/${point.image}`,
+		};
+		return res.json({ point: serializedPoint, items });
 	},
 	async create(req: Request, res: Response) {
 		const {
-			image,
 			name,
 			email,
 			whatsapp,
@@ -45,20 +54,11 @@ export default {
 			longitude,
 			items,
 		} = req.body;
-		if (
-			!image ||
-			!name ||
-			!email ||
-			!whatsapp ||
-			!city ||
-			!uf ||
-			!latitude ||
-			!longitude
-		)
+		if (!name || !email || !whatsapp || !city || !uf || !latitude || !longitude)
 			return res.status(400).json({ error: "All fields required." });
 		try {
 			const trx = await knex.transaction();
-
+			const image = req.file.filename;
 			const [pointId] = await trx("points").insert({
 				image,
 				name,
@@ -69,7 +69,7 @@ export default {
 				latitude,
 				longitude,
 			});
-			const point_item = items.map((item: String) => {
+			const point_item = items.split(",").map((item: string) => {
 				return { point_id: pointId, item_id: Number(item) };
 			});
 			await trx("point_item").insert(point_item);
